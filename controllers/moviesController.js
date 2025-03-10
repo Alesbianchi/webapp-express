@@ -29,19 +29,38 @@ function show(req, res) {
     //recuperiamo l'id dall' URL e trasformiamolo in numero
     const { id } = req.params;
 
+    //costante per richiamare tabella dei film
     const movieDetail = 'SELECT * FROM movies WHERE id = ?';
 
-    connection.query(movieDetail, [id], (err, results) => {
+    //costante per richiamare tabella delle reviews
+    const reviewSql = 'SELECT * FROM reviews WHERE id = ?';
+
+    connection.query(movieDetail, [id], (err, movieResults) => {
 
         if (err) return res.status(500).json({ error: 'Database query failed' });
 
         //permetto di restituire una risposta anche in caso di ricerca negativa
-        if (results.length === 0) return res.status(404).json({ error: 'Mowie not found' });
+        if (movieResults.length === 0) return res.status(404).json({ error: 'movie not found' });
 
-        res.json(results[0]);
+        const movie = movieResults[0];
 
+
+        connection.query(reviewSql, [id], (err, reviewResults) => {
+
+            if (err) return res.status(500).json({ error: 'Database query failed' });
+
+
+            movie.reviews = reviewResults
+
+            //ritorno l'oggetto completo
+            res.json(movie);
+
+
+        });
 
     });
+
+
 
 }
 
