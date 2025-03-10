@@ -6,7 +6,7 @@ const port = process.env.PORT
 
 
 // importo il file delle rotte
-// const postsRouter = require('./router/posts');
+const moviesRouter = require('./routers/movies');
 
 // importo il middleware
 const errorHandlers = require('./middlewares/errorHandlers');
@@ -31,17 +31,18 @@ const notFound = require("./middlewares/notFound");
 
 //definisco la rotta home
 app.get('/', (req, res) => {
-    res.send("Server del mio blog");
+    res.send("Server dei mie film");
 })
 
 
 //utilizzo la rotta dei blog andando a definire la parte iniziale delle rotte
-// app.use("/posts", postsRouter);
+app.use("/api/movies", moviesRouter);
 
 //autorizzo il middleware
 app.use(errorHandlers);
 
 app.use(notFound);
+
 
 //registro il body parser
 app.use(express.json());
