@@ -6,57 +6,42 @@ const connection = require('../data/db');
 
 
 function index(req, res) {
-    // const sql = 'SELECT * FROM posts';
+    const mowieSql = 'SELECT * FROM movies';
 
 
+    // eseguiamo la query!
 
-    // // eseguiamo la query!
+    connection.query(mowieSql, (err, results) => {
 
-    // connection.query(sql, (err, results) => {
+        if (err) return res.status(500).json({ error: 'Database query failed' });
 
-    //     if (err) return res.status(500).json({ error: 'Database query failed' });
+        res.json(results);
 
-    //     res.json(results);
+    });
 
-    // });
+
 
 }
 
 
 function show(req, res) {
-    //res.send('Dettagli del blog ' + req.params.id);
-    // recuperiamo l'id dall' URL e trasformiamolo in numero
-    // const id = parseInt(req.params.id)
+    // res.send('Dettagli dei miei film ' + req.params.id);
+    //recuperiamo l'id dall' URL e trasformiamolo in numero
+    const { id } = req.params;
 
-    // const sql = 'SELECT * FROM posts WHERE id = ?';
+    const movieDetail = 'SELECT * FROM movies WHERE id = ?';
 
-    // connection.query(sql, [id], (err, results) => {
+    connection.query(movieDetail, [id], (err, results) => {
 
-    //     if (err) return res.status(500).json({ error: 'Database query failed' });
+        if (err) return res.status(500).json({ error: 'Database query failed' });
 
-    //     //permetto di restituire una risposta anche in caso di ricerca negativa
-    //     if (results.length === 0) return res.status(404).json({ error: 'post not found' });
+        //permetto di restituire una risposta anche in caso di ricerca negativa
+        if (results.length === 0) return res.status(404).json({ error: 'Mowie not found' });
 
-    //     const post = results[0];
+        res.json(results[0]);
 
-    //     const tagsSql = `
 
-    //         SELECT tags.* 
-    //         FROM tags
-    //         JOIN post_tag ON post_tag.tag_id = tags.id
-    //         WHERE post_tag.post_id = ?;
-
-    //     `;
-    //     // Se è andata bene, eseguiamo la seconda query per i tags 
-    //     connection.query(tagsSql, [id], (err, tagsResults) => {
-    //         if (err) return res.status(500).json({ error: 'Database query failed' });
-
-    //         // Aggoiungiamo i tags ai posts 
-    //         post.tags = tagsResults;
-    //         res.json(post);
-    //     });
-
-    // });
+    });
 
 }
 

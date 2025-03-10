@@ -30,7 +30,7 @@ const notFound = require("./middlewares/notFound");
 
 
 //definisco la rotta home
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
     res.send("Server dei mie film");
 })
 
