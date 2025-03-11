@@ -14,25 +14,25 @@ const errorHandlers = require('./middlewares/errorHandlers');
 // importo il middleware di gestione errore 404
 const notFound = require("./middlewares/notFound");
 
-//definisco la cartella per i file statici
-// app.use("/imgs", express.static('public/imgs/posts'));
-
-// app.use(cors({
+// importo il middleware di gestione path imgs
+const imagePathMiddleware = require("./middlewares/imagePath");
 
 
-//     origin: 'http://localhost:5173'
+//definisco l'uso di una cartella per i file statici
+app.use(express.static('public'));
 
+//registro il body parser per application/json
+app.use(express.json());
 
-// }));
-
-
-
-
+//uso il middleware delle immagini
+app.use(imagePathMiddleware);
 
 //definisco la rotta home
 app.get('/api', (req, res) => {
     res.send("Server dei mie film");
 })
+
+
 
 
 //utilizzo la rotta dei blog andando a definire la parte iniziale delle rotte
@@ -44,8 +44,8 @@ app.use(errorHandlers);
 app.use(notFound);
 
 
-//registro il body parser
-app.use(express.json());
+
+
 
 //avvio del server sulla porta indicata
 app.listen(port, () => {

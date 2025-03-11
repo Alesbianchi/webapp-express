@@ -6,16 +6,23 @@ const connection = require('../data/db');
 
 
 function index(req, res) {
-    const mowieSql = 'SELECT * FROM movies';
+    const movieSql = 'SELECT * FROM movies;';
 
 
     // eseguiamo la query!
 
-    connection.query(mowieSql, (err, results) => {
+    connection.query(movieSql, (err, result) => {
 
         if (err) return res.status(500).json({ error: 'Database query failed' });
 
-        res.json(results);
+        const movies = result.map(movie => {
+            return {
+                ...movie,
+                image: req.imagePath + movie.image
+            }
+        })
+
+        res.json(movies)
 
     });
 
@@ -65,26 +72,7 @@ function show(req, res) {
 }
 
 
-function destroy(req, res) {
-    // res.send('Eliminazione del blog ' + req.params.id);
 
-    // recuperiamo l'id dall' URL e trasformiamolo in numero
-    // const id = parseInt(req.params.id)
-    // connection.query('DELETE FROM posts WHERE id = ?', [id], (err) => {
-
-    //     if (err) return res.status(500).json({ error: 'Failed to delete post' });
-
-    //     res.sendStatus(204)
-
-    // });
-
-}
-
-
-
-function update(req, res) {
-    // copiamo la logica dell'update
-}
 
 
 function store(req, res) {
@@ -112,40 +100,6 @@ function store(req, res) {
 
 }
 
-function update(req, res) {
-    // copio la logica dell'update
-    //console.log(req.body);
-    //res.send('modifica vecchio blog');
-    // recupero l'id dall' URL e lo trasformo in numero
-    // const id = parseInt(req.params.id)
-
-    // // cerco il post tramite id
-    // const post = posts.find(post => post.id === id);
-
-    // if (!post) {
-    //     //restituisco stato di errore 404
-    //     res.status(404);
-
-    //     //restituisco messaggio di errore in json
-    //     return res.json({
-    //         error: "Not found",
-    //         message: "post non trovato"
-    //     })
-    // }
-
-    //ora modifico i dati del post se trovato
-    // post.title = req.body.title;
-    // post.content = req.body.content;
-    // post.image = req.body.image;
-    // post.tags = req.body.tags;
-
-    // //stampo il risultato in console
-    // console.log(posts);
-
-    // //ritorno il post modificato in formato json
-    // res.json(posts);
-
-}
 
 // esportiamo tutto
-module.exports = { index, show, store, update, destroy }
+module.exports = { index, show, store }
