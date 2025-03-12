@@ -40,7 +40,7 @@ function show(req, res) {
     const movieDetail = 'SELECT * FROM movies WHERE id = ?';
 
     //costante per richiamare tabella delle reviews
-    const reviewSql = 'SELECT * FROM reviews WHERE id = ?';
+    const reviewSql = 'SELECT * FROM reviews WHERE movie_id = ?';
 
     connection.query(movieDetail, [id], (err, movieResults) => {
 
@@ -51,6 +51,8 @@ function show(req, res) {
 
         const movie = movieResults[0];
 
+        // **Concatenazione dell'URL dell'immagine**
+        movie.image = req.imagePath + movie.image;
 
         connection.query(reviewSql, [id], (err, reviewResults) => {
 
