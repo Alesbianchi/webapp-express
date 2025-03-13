@@ -1,5 +1,3 @@
-// importo idati
-// const posts = require('../data/posts');
 
 // importo il database
 const connection = require('../data/db');
@@ -73,35 +71,33 @@ function show(req, res) {
 
 }
 
-
-
-
-
+//inserimento nuovo film
 function store(req, res) {
-    // copiamo la logica della store
-    //console.log(req.body);
-    //res.send('Creazione nuovo blog');
-    // const newId = posts[posts.length - 1].id + 1;
-    // // Creo un nuovo oggetto 
-    // const newPost = {
-    //     id: newId,
-    //     title: req.body.title,
-    //     content: req.body.content,
-    //     tags: req.body.tags
-    // }
-    // // Aggiungo il nuovo post
-    // posts.push(newPost);
-
-    // // stampo in console
-    // console.log(posts);
-
-    // // restituisco lo status corretto 
-    // res.status(201);
-    // res.json(newPost);
 
 
 }
 
 
+
+//inserimento nuova recensione
+function storeReview(req, res) {
+
+    //recuoero l'id con i parametri
+    const { id } = req.params
+
+    //recupero le altre info dal body
+    const { name, text, vote } = req.body;
+
+    //registra con sql i dati ricevuti
+    const insertReviewSql = 'INSERT INTO reviews (name, text, vote, movie_id) VALUES (?, ?, ?, ?)';
+    // Eseguiamo la query
+    connection.query(insertReviewSql, [name, text, vote, id], (err, results) => {
+        if (err) return res.status(500).json({ error: 'Database query failed' });
+        res.status(201);
+        res.json({ message: 'Review added', id: results.insertId });
+    });
+}
+
+
 // esportiamo tutto
-module.exports = { index, show, store }
+module.exports = { index, show, store, storeReview }

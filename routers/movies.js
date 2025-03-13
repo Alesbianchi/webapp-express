@@ -16,7 +16,7 @@ router.get('/:id', movieController.show);
 
 
 // store
-router.post('/', movieController.store);
+router.post('/:id/reviews', movieController.storeReview);
 
 
 // esporto router
