@@ -74,6 +74,33 @@ function show(req, res) {
 //inserimento nuovo film
 function store(req, res) {
 
+    //seleziono i valori che dovrà ricevere
+    const { title, director, abstract } = req.body;
+
+    //salvo in una costante l'immagine in arrivo dal frontend utilizzando middleware multer
+    const imageName = `${req.file.filename}`;
+
+    //creo query sql per l'inserimento nel db
+    const query = "INSERT INTO movies (title, director, image, abstract) VALUES (?, ?, ?, ?)";
+
+    //creo la connsessione con i valori da validare
+    connection.query = (
+        query,
+        [title, director, image, abstract],
+        (err, result) => {
+            if (err) {
+                console.log(err);
+                return next(new Error("Errore interno del server"));
+
+            }
+
+            res.status(201).json({
+                status: "succes",
+                message: "film inserito con successo"
+            });
+        })
+
+
 
 }
 
@@ -101,3 +128,5 @@ function storeReview(req, res) {
 
 // esportiamo tutto
 module.exports = { index, show, store, storeReview }
+
+
