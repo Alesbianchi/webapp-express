@@ -84,9 +84,9 @@ function store(req, res) {
     const query = "INSERT INTO movies (title, director, image, abstract) VALUES (?, ?, ?, ?)";
 
     //creo la connsessione con i valori da validare
-    connection.query = (
+    connection.query(
         query,
-        [title, director, image, abstract],
+        [title, director, imageName, abstract],
         (err, result) => {
             if (err) {
                 console.log(err);
